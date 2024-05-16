@@ -14,7 +14,8 @@ import { Service } from "@prisma/client";
 import { ptBR } from "date-fns/locale";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { generateDayTimeList } from "../[id]/helpers/hours";
 
 interface ServiceItemProps {
   service: Service;
@@ -31,6 +32,12 @@ const ServiceItem = ({ service, isAuthenticated }: ServiceItemProps) => {
 
     //abrir modal de agendamento
   };
+
+  const timeList = useMemo(() => {
+    return date ? generateDayTimeList(date) : [];
+  }, [date]);
+
+  console.log({ timeList });
 
   return (
     <Card>
