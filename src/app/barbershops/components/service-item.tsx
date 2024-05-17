@@ -19,6 +19,7 @@ import { useMemo, useState } from "react";
 import { generateDayTimeList } from "../[id]/helpers/hours";
 import { format, setHours, setMinutes } from "date-fns";
 import { saveBooking } from "../[id]/actions/save-booking";
+import { Loader2 } from "lucide-react";
 
 interface ServiceItemProps {
   barbershop: BarberShop;
@@ -35,6 +36,7 @@ const ServiceItem = ({
 
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [hour, setHour] = useState<string | undefined>();
+  const [submitIsLoading, setSubmitIsLoading] = useState(false);
 
   const handleDeleteClick = (date: Date | undefined) => {
     setDate(date);
@@ -52,6 +54,8 @@ const ServiceItem = ({
   };
 
   const handleBookingSubmit = async () => {
+    setSubmitIsLoading(true);
+
     try {
       if (!hour || !date || !data?.user) {
         return;
@@ -70,6 +74,8 @@ const ServiceItem = ({
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      setSubmitIsLoading(false);
     }
   };
 
@@ -193,8 +199,11 @@ const ServiceItem = ({
                   <SheetFooter className="px-5">
                     <Button
                       onClick={handleBookingSubmit}
-                      disabled={!hour || !date}
+                      disabled={!hour || !date || submitIsLoading}
                     >
+                      {submitIsLoading && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
                       Confirmar reserva
                     </Button>
                   </SheetFooter>
