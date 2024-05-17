@@ -5,9 +5,27 @@ import Search from "./components/search";
 import BookingItem from "@/components/booking-item";
 import { db } from "@/lib/prisma";
 import BarbershopItem from "./components/barbershop-item";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default async function Home() {
+  const session = await getServerSession(authOptions);
   const barbershops = await db.barberShop.findMany({});
+
+  const confirmedBookings = session?.user
+    ? await db.booking.findMany({
+        where: {
+          userId: (session.user as any).id,
+          date: {
+            gte: new Date(),
+          },
+        },
+        include: {
+          service: true,
+          barbershop: true,
+        },
+      })
+    : [];
 
   return (
     <div>
@@ -26,12 +44,17 @@ export default async function Home() {
         <Search />
       </div>
 
-      {/* <div className="px-5 mt-6">
-        <h2 className="text-xs mb-3 uppercase text-gray-400 font-bold">
+      <div className="mt-6">
+        <h2 className="pl-5 text-xs mb-3 uppercase text-gray-400 font-bold">
           Agendamentos
         </h2>
-        <BookingItem />
-      </div> */}
+
+        <div className="px-5 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+          {confirmedBookings.map((booking) => (
+            <BookingItem key={booking.id} booking={booking} />
+          ))}
+        </div>
+      </div>
 
       <div className="mt-6">
         <h2 className=" px-5 text-xs mb-3 uppercase text-gray-400 font-bold">
