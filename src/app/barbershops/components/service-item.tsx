@@ -6,24 +6,41 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   Sheet,
   SheetContent,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Service } from "@prisma/client";
+import { BarberShop, Service } from "@prisma/client";
 import { ptBR } from "date-fns/locale";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { generateDayTimeList } from "../[id]/helpers/hours";
+import { format } from "date-fns";
 
 interface ServiceItemProps {
+  barbershop: BarberShop;
   service: Service;
   isAuthenticated?: boolean;
 }
 
-const ServiceItem = ({ service, isAuthenticated }: ServiceItemProps) => {
+const ServiceItem = ({
+  service,
+  barbershop,
+  isAuthenticated,
+}: ServiceItemProps) => {
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const [hour, setHour] = useState<string | undefined>();
+
+  const handleDeleteClick = (date: Date | undefined) => {
+    setDate(date);
+    setHour(undefined);
+  };
+
+  const handleHourClick = (time: string) => {
+    setHour(time);
+  };
 
   const handleBookingClick = () => {
     if (!isAuthenticated) {
@@ -41,7 +58,7 @@ const ServiceItem = ({ service, isAuthenticated }: ServiceItemProps) => {
 
   return (
     <Card>
-      <CardContent className="p-3">
+      <CardContent className="p-3 w-full">
         <div className="flex gap-4 items-center w-full">
           <div className="relative min-h-[110px] min-w-[110px] max-h-[110px] max-w-[110px]">
             <Image
@@ -75,26 +92,84 @@ const ServiceItem = ({ service, isAuthenticated }: ServiceItemProps) => {
                     <SheetTitle>Fazer Reserva</SheetTitle>
                   </SheetHeader>
 
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={setDate}
-                    locale={ptBR}
-                    className="mt-4"
-                    fromDate={new Date()}
-                    styles={{
-                      head_cell: {
-                        width: "100%",
-                        textTransform: "capitalize",
-                      },
-                      cell: {
-                        width: "100%",
-                      },
-                      caption: {
-                        textTransform: "capitalize",
-                      },
-                    }}
-                  />
+                  <div className="py-6">
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      onSelect={handleDeleteClick}
+                      locale={ptBR}
+                      fromDate={new Date()}
+                      styles={{
+                        head_cell: {
+                          width: "100%",
+                          textTransform: "capitalize",
+                        },
+                        cell: {
+                          width: "100%",
+                        },
+                        caption: {
+                          textTransform: "capitalize",
+                        },
+                      }}
+                    />
+                  </div>
+
+                  {date && (
+                    <div className="flex gap-3 overflow-x-auto py-6 px-5 border-t border-solid border-secondary [&::-webkit-scrollbar]:hidden">
+                      {timeList.map((time) => (
+                        <Button
+                          onClick={() => handleHourClick(time)}
+                          variant={hour === time ? "default" : "outline"}
+                          className="rounded-full"
+                          key={time}
+                        >
+                          {time}
+                        </Button>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="py-6 px-5 border-t border-solid border-secondary">
+                    <Card>
+                      <CardContent className="p-3 flex flex-col gap-3">
+                        <div className="flex justify-between">
+                          <h2 className="font-bold">{service.name}</h2>
+                          <h3 className="font-bold text-sm">
+                            {Intl.NumberFormat("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            }).format(Number(service.price))}
+                          </h3>
+                        </div>
+
+                        {date && (
+                          <div className="flex justify-between">
+                            <h3 className="text-gray-400 text-sm">Data</h3>
+                            <h4 className="text-sm">
+                              {format(date, "dd 'de' MMMM", {
+                                locale: ptBR,
+                              })}
+                            </h4>
+                          </div>
+                        )}
+
+                        {hour && (
+                          <div className="flex justify-between">
+                            <h3 className="text-gray-400 text-sm">Horário</h3>
+                            <h4 className="text-sm">{hour}</h4>
+                          </div>
+                        )}
+
+                        <div className="flex justify-between">
+                          <h3 className="text-gray-400 text-sm">Barbearia</h3>
+                          <h4 className="text-sm">{barbershop.name}</h4>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                  <SheetFooter className="px-5">
+                    <Button disabled={!hour || !date}>Confirmar reserva</Button>
+                  </SheetFooter>
                 </SheetContent>
               </Sheet>
             </div>
