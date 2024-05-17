@@ -11,7 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { BarberShop, Service } from "@prisma/client";
+import { BarberShop, Booking, Service } from "@prisma/client";
 import { ptBR } from "date-fns/locale";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
@@ -22,6 +22,7 @@ import { saveBooking } from "../[id]/actions/save-booking";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { getDayBookings } from "../[id]/actions/get-day-bookings";
 
 interface ServiceItemProps {
   barbershop: BarberShop;
@@ -41,8 +42,24 @@ const ServiceItem = ({
   const [hour, setHour] = useState<string | undefined>();
   const [submitIsLoading, setSubmitIsLoading] = useState(false);
   const [sheetIsOpen, setSheetIsOpen] = useState(false);
+  const [dayBookings, setDayBookings] = useState<Booking[]>([]);
 
-  const handleDeleteClick = (date: Date | undefined) => {
+  console.log({ dayBookings });
+
+  useEffect(() => {
+    if (!date) {
+      return;
+    }
+
+    const refreshAvailableHours = async () => {
+      const _dayBookings = await getDayBookings(date);
+      setDayBookings(_dayBookings);
+    };
+
+    refreshAvailableHours();
+  }, [date]);
+
+  const handleDateClick = (date: Date | undefined) => {
     setDate(date);
     setHour(undefined);
   };
@@ -97,10 +114,28 @@ const ServiceItem = ({
   };
 
   const timeList = useMemo(() => {
-    return date ? generateDayTimeList(date) : [];
-  }, [date]);
+    if (!date) {
+      return [];
+    }
 
-  console.log({ timeList });
+    return generateDayTimeList(date).filter((time) => {
+      const timeHour = Number(time.split(":")[0]);
+      const timeMinutes = Number(time.split(":")[1]);
+
+      const booking = dayBookings.find((booking) => {
+        const bookingsHour = booking.date.getHours();
+        const bookingsMinutes = booking.date.getMinutes();
+
+        return bookingsHour === timeHour && bookingsMinutes === timeMinutes;
+      });
+
+      if (!booking) {
+        return true;
+      }
+
+      return false;
+    });
+  }, [date, dayBookings]);
 
   return (
     <Card>
@@ -142,7 +177,7 @@ const ServiceItem = ({
                     <Calendar
                       mode="single"
                       selected={date}
-                      onSelect={handleDeleteClick}
+                      onSelect={handleDateClick}
                       locale={ptBR}
                       fromDate={new Date()}
                       styles={{
