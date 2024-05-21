@@ -1,7 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 
-## Projeto FSW-BarberShop
+## Projeto FSW-BarberShop 🚀
 
 Neste projeto, foi desenvolvido um sistema que permite aos clientes agendar serviços em diversas barbearias, proporcionando a conveniência de marcar atendimentos em qualquer estabelecimento participante.
 
