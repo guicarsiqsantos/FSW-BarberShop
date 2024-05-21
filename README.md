@@ -26,5 +26,7 @@ Neste projeto, foi desenvolvido um sistema que permite aos clientes agendar serv
 
 ## Autor 😁
 
-- [@Guilherme Carvalho](https://www.github.com/guicarsiqsantos)
+```bash
+  [@Guilherme Carvalho](https://www.github.com/guicarsiqsantos)
+```
 
