@@ -14,12 +14,13 @@ Neste projeto, foi desenvolvido um sistema que permite aos clientes agendar serv
 
 ![image](https://github.com/guicarsiqsantos/FSW-BarberShop/assets/70959791/de063951-f9af-46b2-93b5-5f957296cb30)
 
-## Projeto Mobile
+## Projeto Mobile 📲
 
-![image](https://github.com/guicarsiqsantos/FSW-BarberShop/assets/70959791/34b2ce4a-7472-4d67-9f53-9e69324c34f4)
+![ProjectFigma](https://github.com/guicarsiqsantos/FSW-BarberShop/assets/70959791/e9bed5ab-d01a-4c41-bf98-cd0720dc5475)
 
 
-## Autor
+
+## Autor 😁
 
 - [@Guilherme Carvalho](https://www.github.com/guicarsiqsantos)
 
