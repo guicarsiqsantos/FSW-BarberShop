@@ -5,12 +5,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 Neste projeto, foi desenvolvido um sistema que permite aos clientes agendar serviços em diversas barbearias, proporcionando a conveniência de marcar atendimentos em qualquer estabelecimento participante.
 
+<br/>
 
-## Linguagens usadas 🚀
+## 🛠 Habilidades
+[Next.js](https://nextjs.org/), [Shadcn](https://ui.shadcn.com/), TypeScript...
 
- - [Next.js](https://nextjs.org/)
- - [Shadcn](https://ui.shadcn.com/)
-
+<br/>
 
 ![image](https://github.com/guicarsiqsantos/FSW-BarberShop/assets/70959791/de063951-f9af-46b2-93b5-5f957296cb30)
 
