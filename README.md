@@ -8,7 +8,11 @@ Neste projeto, foi desenvolvido um sistema que permite aos clientes agendar serv
 <br/>
 
 ## 🛠 Habilidades
-[Next.js](https://nextjs.org/), [Shadcn](https://ui.shadcn.com/), TypeScript...
+[`Next.js`](https://nextjs.org/), [`Shadcn`](https://ui.shadcn.com/), TypeScript...
+
+```bash
+  Linguagens usadas para realizar o desenvolvimento
+```
 
 <br/>
 
