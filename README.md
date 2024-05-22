@@ -7,6 +7,12 @@ Neste projeto, foi desenvolvido um sistema que permite aos clientes agendar serv
 
 <br/>
 
+## Projeto FSW-BarberShop VERCEL 🔓
+
+https://fsw-barber-shop-azure.vercel.app/
+
+<br/>
+
 ## 🛠 Habilidades
 [`Next.js`](https://nextjs.org/), [`Shadcn`](https://ui.shadcn.com/), TypeScript...
 
